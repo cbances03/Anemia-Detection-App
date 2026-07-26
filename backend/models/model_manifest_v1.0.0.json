@@ -1,0 +1,33 @@
+{
+  "model_name": "kNN_SMOTE",
+  "version": "1.0.0",
+  "stage": "production_candidate",
+  "artifact_filename": "kNN_SMOTE_v1.0.0.joblib",
+  "metadata_filename": "metadata_v1.0.0.json",
+  "created_at": "2026-07-16T03:27:04.596655+00:00",
+  "sha256": "381e1eb1f8b22877c9076a3420a3d14280ab52d46abdfaa4c847859a838e68b3",
+  "size_bytes": 380973,
+  "task": "binary_classification",
+  "dataset": "CP-ANEMIC",
+  "positive_class": "Anemic",
+  "threshold": 0.4,
+  "feature_count": 117,
+  "image_size": [
+    224,
+    224
+  ],
+  "hyperparameters": {
+    "type": "KNeighborsClassifier",
+    "n_neighbors": 7,
+    "metric": "manhattan",
+    "weights": "distance",
+    "algorithm": "auto",
+    "classes": [
+      0,
+      1
+    ],
+    "n_features_in": 117
+  },
+  "status": "active_candidate",
+  "notes": "Primera versión formal del modelo ganador. Corresponde al artefacto entrenado kNN + SMOTE seleccionado durante la comparación experimental."
+}

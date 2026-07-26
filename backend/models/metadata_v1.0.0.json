@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "metadata_generated_at": "2026-07-16T03:22:56.020736+00:00",
+  "model": {
+    "name": "kNN_SMOTE",
+    "display_name": "k-Nearest Neighbors with SMOTE",
+    "version": "1.0.0",
+    "status": "production_candidate",
+    "task": "binary_classification",
+    "objective": "Detección no invasiva de anemia mediante imágenes de la conjuntiva palpebral",
+    "artifact": {
+      "filename": "kNN_SMOTE.joblib",
+      "format": "joblib",
+      "size_bytes": 380973,
+      "sha256": "381e1eb1f8b22877c9076a3420a3d14280ab52d46abdfaa4c847859a838e68b3"
+    }
+  },
+  "artifact_contents": {
+    "package_keys": [
+      "modelo",
+      "threshold",
+      "anemic_index",
+      "class_names",
+      "img_size"
+    ],
+    "pipeline_type": "imblearn.pipeline.Pipeline",
+    "pipeline_steps": [
+      {
+        "name": "scaler",
+        "type": "sklearn.preprocessing._data.StandardScaler"
+      },
+      {
+        "name": "smote",
+        "type": "imblearn.over_sampling._smote.base.SMOTE"
+      },
+      {
+        "name": "clf",
+        "type": "sklearn.neighbors._classification.KNeighborsClassifier"
+      }
+    ]
+  },
+  "dataset": {
+    "name": "CP-ANEMIC",
+    "classes": [
+      "Anemic",
+      "Non-anemic"
+    ],
+    "positive_class": "Anemic",
+    "positive_class_index": 0,
+    "class_encoding": {
+      "0": "Anemic",
+      "1": "Non-anemic"
+    },
+    "split": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "stratified_split": true,
+    "random_seed": 42
+  },
+  "input": {
+    "source_type": "image",
+    "supported_formats": [
+      "jpg",
+      "jpeg",
+      "png"
+    ],
+    "image_size": [
+      224,
+      224
+    ],
+    "channels": 3,
+    "feature_count": 117,
+    "expected_feature_shape": [
+      1,
+      117
+    ],
+    "feature_dtype": "float64",
+    "feature_names_embedded_in_artifact": false,
+    "feature_order_must_be_preserved": true
+  },
+  "preprocessing": {
+    "external_preprocessing_required": true,
+    "steps": [
+      "Lectura de imagen",
+      "Redimensionamiento a 224x224",
+      "Balance de blancos Gray World",
+      "Mejora de contraste mediante CLAHE",
+      "Extracción de 117 características cromáticas y estadísticas"
+    ],
+    "color_spaces": [
+      "RGB",
+      "LAB",
+      "HSV"
+    ],
+    "important_note": "El archivo Joblib no recibe imágenes directamente. La aplicación debe reproducir exactamente el preprocesamiento y el orden de las 117 características utilizados en el notebook."
+  },
+  "pipeline": {
+    "scaler": {
+      "type": "StandardScaler",
+      "with_mean": true,
+      "with_std": true,
+      "n_features_in": 117
+    },
+    "resampling": {
+      "type": "SMOTE",
+      "sampling_strategy": "auto",
+      "random_state": 42,
+      "k_neighbors": 5,
+      "inference_behavior": "SMOTE se aplica durante el ajuste del pipeline y se omite durante la inferencia."
+    },
+    "classifier": {
+      "type": "KNeighborsClassifier",
+      "n_neighbors": 7,
+      "metric": "manhattan",
+      "weights": "distance",
+      "algorithm": "auto",
+      "classes": [
+        0,
+        1
+      ],
+      "n_features_in": 117
+    }
+  },
+  "decision": {
+    "threshold": 0.4,
+    "positive_class_index": 0,
+    "rule": "Clasificar como Anemic cuando la probabilidad de la clase positiva sea mayor o igual al threshold."
+  },
+  "evaluation": {
+    "source": "Resultados finales del notebook de comparación de modelos",
+    "metrics": {
+      "accuracy": 0.813084,
+      "precision": 0.814286,
+      "sensitivity": 0.890625,
+      "specificity": 0.697674,
+      "f1_score": 0.850746,
+      "auc": 0.918241
+    },
+    "confusion_matrix": {
+      "true_positive": 57,
+      "false_negative": 7,
+      "false_positive": 13,
+      "true_negative": 30
+    }
+  },
+  "compatibility": {
+    "serialized_scikit_learn_version": "1.6.1",
+    "recommended_environment": "Usar scikit-learn 1.6.1 y una versión compatible de imbalanced-learn para evitar incompatibilidades.",
+    "python_version_at_training": null,
+    "imbalanced_learn_version_at_training": null,
+    "joblib_version_at_training": null
+  },
+  "deployment": {
+    "backend": "FastAPI",
+    "load_strategy": "load_once_at_application_startup",
+    "intended_use": "screening_support",
+    "medical_disclaimer": "El resultado no constituye un diagnóstico médico y debe confirmarse mediante evaluación profesional y una prueba de hemoglobina."
+  },
+  "traceability": {
+    "created_by": "Eduardo Bautista Arrilucea",
+    "training_environment": "Kaggle",
+    "repository": "DETECTION_OF_ANEMIA_WITH_AI",
+    "training_date": null,
+    "notes": "Modelo ganador seleccionado después de comparar CNN, MobileNetV2 + SVM, RUSBoost, kNN + SMOTE y DeiT/ViT."
+  }
+}
