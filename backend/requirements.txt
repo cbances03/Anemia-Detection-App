@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+joblib
+numpy
+scikit-learn==1.6.1
+imbalanced-learn
+pydantic
+python-multipart
