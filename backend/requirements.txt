@@ -2,9 +2,13 @@ fastapi
 uvicorn[standard]
 joblib
 numpy
+Pillow
+opencv-python-headless
+scikit-image
 scikit-learn==1.6.1
 imbalanced-learn
 pydantic
 python-dotenv
 pydantic-settings
 python-multipart
+pytest
